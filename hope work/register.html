@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="navbar">
+     <div class="logo">The margin</div> 
+     <nav>
+        <a href="#">post</a>
+        <a href="#">sign in</a>
+        <button>get started</button>
+     </nav> 
+    </header>
+
+            <section class="inform">
+                <form id="registerForm">
+                    <h1>Start Writing</h1>
+                    <p>Create an account and publish your first essay.</p>
+                    <label class="name">NAME</label>
+                    <input id="fullName" type="text" placeholder="Hope Usman">
+                    <label class="email">EMAIL</label>
+                <input id="email" type="email" placeholder="Danjumaplangtap@gmail.com">
+                <label class="password">PASSWORD</label> 
+                <input id="password" type="password" placeholder="12345678">
+                 <button id="register" type="submit">create account</button>
+                 <label class="type">Already have an account? <a class="sign-up" href="">Sign in</a></label>
+                </form>
+        
+                    </section>
+    <footer class="footer">
+        <div class="footer-logo">the margin</div>
+        <div class="footer-text">
+            A place for ideas worth keeping.
+        </div>
+    </footer>
+    <script src="../js/api.js"></script>
+    <script>
+        async function registerStudent(fullName, email, password) {
+            
+            console.log(fullName,email,password);                                                          
+            const data = await apiRequest("/api/auth/register", { 
+            method: "POST", 
+            body: JSON.stringify({ fullName, email, password, department: "CS", level: "300" }), 
+            }); 
+  
+            // data = { token, tokenType, student: {...} } 
+            localStorage.setItem("token", data.token); 
+            localStorage.setItem("student", JSON.stringify(data.student)); 
+            
+            return data.student;
+
+            }
+ document.getElementById("registerForm").addEventListener("submit", async (e) => { 
+   e.preventDefault(); // stop the page from reloading 
+   try { 
+
+    document.getElementById("register").textContent="Regitering....";
+    document.getElementById("register").ariaDisabled="true";
+    
+    const student = await registerStudent( 
+      document.getElementById("fullName").value, 
+      document.getElementById("email").value, 
+      document.getElementById("password").value
+    ); 
+    alert(`Welcome, ${student.fullName}! You're now logged in.`); 
+    window.location.href = "../index.html"; // go to the homepage 
+  } catch (err) { 
+    alert(err.message); // e.g. "A student with this email already exists" 
+  } finally {
+     document.getElementById("register").textContent="create account";
+     document.getElementById("register").ariaDisabled="false";
+
+  }
+}); 
+ 
+    </script>
+</html>
+</body>

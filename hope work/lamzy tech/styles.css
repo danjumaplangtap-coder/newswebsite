@@ -1,0 +1,141 @@
+* {
+
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;  
+}
+
+button {
+    background-color: #b8651a;
+    color:white;
+    padding-top: 6px;
+    padding-right: 16px;
+    padding-left: 10px;
+    padding-bottom: 6px;
+
+}
+a {
+    display: flex;
+    justify-content: space-between;
+    text-decoration: none;
+}
+
+header{
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: row;
+    background-color: #faf8f4;
+    justify-content: space-between;
+    padding-left: 24px;
+    padding-right: 24px;
+
+}
+.post-form{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.page {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    align-self: flex-start;
+    gap:10px;
+}
+nav {
+
+    padding: 30px 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid;
+    background-color: #faf8f4;
+    border-color: #D9D2C5;
+    gap: 24px;
+}
+
+.inform {
+    display: grid;
+    font-weight: 400;
+    font-size: 12px;
+    color: #7a7060;
+}
+.reader {
+    display: grid;
+    width: 624px;
+    grid-template-columns: repeat(2,1fr);
+    padding-top: 24px;
+    gap: 10px;
+}
+.form {
+    display: grid;
+    width: 624px;
+    grid-template-columns: repeat(2,1fr);
+    padding-top: 24px;
+    gap: 10px;
+}
+input {
+    max-width: 624px;
+    color: #fAf8f4;
+
+}
+label{
+   text-align: left; 
+}
+input {
+    width: 400px;
+    height: 48.4px;
+    border-radius: 4px;
+    border: 1px solid;
+    padding-top: 12px;
+    padding-right: 16px;
+    padding-left: 16px;
+    padding-bottom: 12px;
+    border-color: rgba(217, 210, 197, 1);
+}
+.type {
+    display: flex;
+    align-self: center;
+    justify-content: center;
+    font-weight: 400;
+    font-size: 14px;
+    color: #7A7060;
+}
+.sign-up {
+    text-decoration: none;
+}
+a {
+    text-decoration: none;
+    color: #7A7060;
+    font-size: 14px;
+    font-weight: 400;
+}
+.footer {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 120px;
+    height: 20px;
+    padding-right: 24px;
+    padding-left: 24px;
+    background-color: #fAf8f4;
+}
+.meta {
+    display: flex;
+    padding-top: 32px;
+    gap: 16px;
+    align-items: center;
+}
+.place {
+    padding-top: 24px;
+}
+textarea {
+    width: 624px;
+    height: 416px;
+    padding-left: 16px;
+    padding-right: 16px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    align-items: center;
+
+}
