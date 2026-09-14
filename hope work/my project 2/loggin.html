@@ -10,22 +10,22 @@
     <header class="navbar">
      <div class="logo">The margin</div> 
      <nav>
-        <a href="#">post</a>
+        <a href="../lamzy tech/post.html">post</a>
         <a href="#">sign in</a>
         <button>get started</button>
      </nav> 
     </header>
 
             <section class="inform">
-                <form>
+                <form id="loginForm">
                     <h1>welcome back.</h1>
                     <p>Sign in to continue writing and reading.</p>
                     <label class="email">EMAIL</label>
-                <input type="email" placeholder="Danjumaplangtap@gmail.com">
+                <input id="email" type="email" placeholder="Danjumaplangtap@gmail.com" required>
                 <label class="password">PASSWORD</label> 
-                <input type="password" placeholder="12345678">
-                 <button type="submit">create account</button>
-                 <label class="type">Already have an account? <a class="sign-up" href="">Sign in</a></label>
+                <input id="password" type="password" placeholder="enter your password" required>
+                 <button id="loginButton" type="submit">sign in</button>
+                 <label class="type">Need an account? <a class="sign-up" href="../register.html">Create one</a></label>
                 </form>
         
                     </section>
@@ -35,40 +35,36 @@
             A place for ideas worth keeping.
         </div>
     </footer>
-    <script src="../ezzzy6/server.js"></script>
+    <script src="../../js/api.js"></script>
     <script>
     async function loginStudent(email, password) {
-         const data = await apiRequest("/api/auth/login", { 
-            method: "POST",
-             body: JSON.stringify({ email, password }),
-             });
-             
-             localStorage.setItem("token", data.token);
-              localStorage.setItem("student", JSON.stringify(data.student));
-              
-              return data.student;
-             } 
-             
-             document.getElementById("loginForm").addEventListener("submit", async (e) => {
-                 e.preventDefault();
-                  try { 
+  const data = await apiRequest("/api/auth/login", {
+    method: "POST",
+    body: JSON.stringify({ email, password }),
+  });
 
-                    document.getElementById("LOGING-IN").textContent = "LOGING-IN...";
-            document.getElementById("LOGING-IN").ariaDisabled = true;
-                   
-                   console.log("Logging in...")
+  saveSession(data);
 
-                    await loginStudent( 
-                        document.getElementById("email").value,
-                        document.getElementById("password").value
-                     );
-                        window.location.href = "../ezzzy7/ezzzy.html";
-                     } catch (err) { 
-                        alert(err.message); // e.g. "Invalid email or password"
-                 } finally {
-                 document.getElementById("LOGING-IN").textContent = "LOGIN";
-                 document.getElementById("LOGING-IN").ariaDisabled = false;
-                 }
-                });
+  return data.student;
+}
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const loginButton = document.getElementById("loginButton");
+  loginButton.textContent = "Signing in...";
+  loginButton.disabled = true;
+  try {
+    await loginStudent(
+      document.getElementById("email").value,
+      document.getElementById("password").value
+    );
+    window.location.href = "../../index.html";
+  } catch (err) {
+    alert(err.message); // e.g. "Invalid email or password"      
+  } finally {
+    loginButton.textContent = "sign in";
+    loginButton.disabled = false;
+  }
+});
+</script>
 </html>
 </body>

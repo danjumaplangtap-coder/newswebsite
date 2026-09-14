@@ -10,9 +10,9 @@
     <header class="navbar">
      <div class="logo">The margin</div> 
      <nav>
-        <a href="#">post</a>
-        <a href="#">sign in</a>
-        <button>get started</button>
+        <a href="../../../index.html#posts">posts</a>
+        <a href="../loggin.html">sign in</a>
+        <a href="../../lamzy tech/post.html"><button type="button">write</button></a>
      </nav> 
     </header>
 
@@ -21,20 +21,20 @@
     <section style="display: flex; align-items: center; justify-content: center;">
         <section class="post-detail">
             <div class="page">
-                <div class="header">CULTURE</div>
+                <div id="postCategory" class="header">CULTURE</div>
             </div>
-            <h1>The Quiet Discipline of Reading Without Purpose</h1>
+            <h1 id="postTitle">The Quiet Discipline of Reading Without Purpose</h1>
             <div class="author">
                 <img src="image/Image (Margot Ellison) (3).png" alt="author">
             <div>
-                <nav>margot Ellison</nav>
-                <nav>August 18, 2026.4 min</nav>
+                <nav id="postAuthor">margot Ellison</nav>
+                <nav id="postMeta">August 18, 2026.4 min</nav>
             </div>   
             </div>
             <div class="rule">
                 <img src="image/Container.png">
             </div>
-            <div class="content">
+            <div id="postContent" class="content">
                 <p>In an age of productivity optimization, there is something quietly radical about <br>picking up a book with no agenda beyond the pleasure of it. We have turned <br>reading into a metric — books per year, pages per day, highlights per chapter. The<br> algorithm rewards volume; our bookshelves become résumés.</p>
                 <p>But there is another kind of reading, older and less celebrated. It wanders. It stops <br>in the middle of a paragraph to stare at the ceiling. It rereads the same sentence <br>four times not because it is difficult, but because it is beautiful.</p>
                 <p>I call this purposeless reading, though the name is slightly unfair. It has enormous<br> purpose. It just refuses to be measured.</p>
@@ -44,7 +44,7 @@
                 <p>I think it is worth the effort. Some of the most important things I believe, I cannot <br>trace to a specific book. They seeped in somewhere, in some half-remembered<br> afternoon, when I was reading without any particular reason.</p>
             </div>
             <div class="bottom-rule"></div>
-            <a class="all-posts" href="#">← All posts</a>
+            <a class="all-posts" href="../../../index.html#posts">← All posts</a>
             <section class="more">
                 <h2>More from Margot Ellison</h2>
                 <a class="related" href="#">
@@ -64,8 +64,29 @@
         </div>
     </footer>
 
-</head>
-<body>
-    
+    <script src="../../../js/api.js"></script>
+    <script>
+        const detailValue = (post, ...keys) => keys.map((key) => post[key]).find((value) => value !== undefined && value !== null) || "";
+        const detailEscape = (value) => String(value).replace(/[&<>'"]/g, (character) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[character]));
+
+        async function loadPost() {
+            const postId = new URLSearchParams(window.location.search).get("id");
+            if (!postId) return;
+
+            try {
+                const post = await getPost(postId);
+                const content = detailValue(post, "content", "post_content");
+                document.getElementById("postCategory").textContent = detailValue(post, "category", "post_category") || "ESSAY";
+                document.getElementById("postTitle").textContent = detailValue(post, "title", "post_title") || "Untitled essay";
+                document.getElementById("postAuthor").textContent = detailValue(post, "authorName", "studentName") || post.author?.fullName || post.author?.name || "margin contributor";
+                document.getElementById("postMeta").textContent = detailValue(post, "createdAt", "date") || "";
+                document.getElementById("postContent").innerHTML = String(content).split(/\n\s*\n/).map((paragraph) => `<p>${detailEscape(paragraph).replace(/\n/g, "<br>")}</p>`).join("");
+            } catch (error) {
+                document.getElementById("postContent").textContent = error.message;
+            }
+        }
+
+        loadPost();
+    </script>
 </body>
 </html>

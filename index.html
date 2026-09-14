@@ -13,9 +13,9 @@
     <header class="navbar">
         <div class="logo">the margin</div>
     <nav>
-        <a href="#">posts</a>
-        <a href="#">sign in</a>
-        <button>get started</button>
+        <a href="" onclick="alert('please Login')">posts</a>
+        <a href="hope work/my project 2/loggin.html">sign in</a>
+        <a href="hope work/register.html"><button type="button">get started</button></a>
     </nav>
     </header>
 
@@ -37,11 +37,11 @@
                 </div>
             </section>
             <section class="quiet">
-                    <p class="category">CULTURE</p>
-                    <h2>
+                    <p id="featuredCategory" class="category">CULTURE</p>
+                    <h2 id="featuredTitle">
                         The Quiet Discipline of Reading Without Purpose
                     </h2>
-                    <p class="page">
+                    <p id="featuredExcerpt" class="page">
                         In an age of productivity optimization, there is something quietly radical about picking up a book with no agenda beyond the pleasure of it.
                     </p>
             
@@ -64,58 +64,7 @@
 
     <section class="more-essay">
         <p class="section-title">MORE ESSAYS</p>
-        <div class="more-image">
-
-            <div class="card">
-                <div class="card-img">
-                    <img src="image/BlogListing.png">
-                </div>
-                <p class="category">TECNOLOGY</p>
-                <h4 class="more">
-                    What Software Engineers Get Wrong About Writing
-                </h4>
-                <p class="after">
-                     Code and prose share a surprising number of virtues. Clarity, precision, economy. But
-                </p>
-                <div class="small-author">
-                    <img src="image/Image (Thomas Vael).png">
-                    <nav>thomas vael .5 min</nav>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">
-                    <img src="image/BlogListing_margin (2).png">
-                </div>
-                <p class="category">TRAVEL</p>
-                <h4 class="more">
-                    On cities that reward slowness
-                </h4>
-                <p class="after">
-                    Some cities are built for speed. Others reveal themselves only to those patient enough to walk every street at least once.
-                </p>
-                <div class="small-author">
-                    <img src="image/Image (Thomas Vael).png">
-                    <nav>thomas vael .5 min</nav>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-img">
-                    <img src="image/BlogListing (1).png">
-                </div>
-                <p class="category">IDEAS</p>
-                <h4 class="more">
-                The Surprising Ethics of Making Things
-                </h4>
-                <p class="after">
-                     Every object you make is a small argument about how the world should be. The ethics of craft are hidden in plain sight.
-                </p>
-                <div class="small-author">
-                    <img src="image/Image (Thomas Vael).png">
-                    <nav>thomas vael .5 min</nav>
-                </div>
-            </div>
-
-        </div>
+        <div id="posts" class="more-image">Loading essays...</div>
     </section>
 
      <!-- <div class="card">
@@ -157,4 +106,37 @@
     </footer>
 
 </div>
+    <script src="js/api.js"></script>
+    <script>
+        const valueOf = (post, ...keys) => keys.map((key) => post[key]).find((value) => value !== undefined && value !== null) || "";
+        const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (character) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[character]));
+
+        async function loadPosts() {
+            const postsElement = document.getElementById("posts");
+            try {
+                const posts = await getPosts();
+                if (!posts.length) {
+                    postsElement.textContent = "No essays have been published yet.";
+                    return;
+                }
+
+                const firstPost = posts[0];
+                document.getElementById("featuredCategory").textContent = valueOf(firstPost, "category", "post_category") || "ESSAY";
+                document.getElementById("featuredTitle").textContent = valueOf(firstPost, "title", "post_title") || "Untitled essay";
+                document.getElementById("featuredExcerpt").textContent = valueOf(firstPost, "excerpt", "summary", "post_excerpt", "content");
+                postsElement.innerHTML = posts.map((post, index) => {
+                    const id = valueOf(post, "id", "_id", "postId");
+                    const title = valueOf(post, "title", "post_title") || "Untitled essay";
+                    const excerpt = valueOf(post, "excerpt", "summary", "post_excerpt", "content");
+                    const category = valueOf(post, "category", "post_category") || "ESSAY";
+                    const author = valueOf(post, "authorName", "studentName") || post.author?.fullName || post.author?.name || "margin contributor";
+                    return `<article class="card"><p class="category">${escapeHtml(category)}</p><h4 class="more"><a href="hope work/my project 2/my coding/Blog detail.html?id=${encodeURIComponent(id)}">${escapeHtml(title)}</a></h4><p class="after">${escapeHtml(String(excerpt).slice(0, 180))}</p><div class="small-author"><nav>${escapeHtml(author)}</nav></div></article>`;
+                }).join("");
+            } catch (error) {
+                postsElement.textContent = error.message;
+            }
+        }
+
+        loadPosts();
+    </script>
 </html>

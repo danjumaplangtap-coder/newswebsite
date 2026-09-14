@@ -21,13 +21,13 @@
                     <h1>Start Writing</h1>
                     <p>Create an account and publish your first essay.</p>
                     <label class="name">NAME</label>
-                    <input id="fullName" type="text" placeholder="Hope Usman">
+                    <input id="fullName" type="text" placeholder="Hope Usman" required>
                     <label class="email">EMAIL</label>
-                <input id="email" type="email" placeholder="Danjumaplangtap@gmail.com">
+                <input id="email" type="email" placeholder="Danjumaplangtap@gmail.com" required>
                 <label class="password">PASSWORD</label> 
-                <input id="password" type="password" placeholder="12345678">
+                <input id="password" type="password" placeholder="12345678" minlength="8" required>
                  <button id="register" type="submit">create account</button>
-                 <label class="type">Already have an account? <a class="sign-up" href="">Sign in</a></label>
+                 <label class="type">Already have an account? <a class="sign-up" href="../hope work/my project 2/loggin.html">Sign in</a></label>
                 </form>
         
                     </section>
@@ -44,12 +44,11 @@
             console.log(fullName,email,password);                                                          
             const data = await apiRequest("/api/auth/register", { 
             method: "POST", 
-            body: JSON.stringify({ fullName, email, password, department: "CS", level: "300" }), 
+            body: JSON.stringify({ fullName, email, password, department: "Computer science", level: "300" }),
             }); 
   
             // data = { token, tokenType, student: {...} } 
-            localStorage.setItem("token", data.token); 
-            localStorage.setItem("student", JSON.stringify(data.student)); 
+            saveSession(data);
             
             return data.student;
 
@@ -58,8 +57,9 @@
    e.preventDefault(); // stop the page from reloading 
    try { 
 
-    document.getElementById("register").textContent="Regitering....";
-    document.getElementById("register").ariaDisabled="true";
+    const registerButton = document.getElementById("register");
+    registerButton.textContent="Registering...";
+    registerButton.disabled = true;
     
     const student = await registerStudent( 
       document.getElementById("fullName").value, 
@@ -71,8 +71,8 @@
   } catch (err) { 
     alert(err.message); // e.g. "A student with this email already exists" 
   } finally {
-     document.getElementById("register").textContent="create account";
-     document.getElementById("register").ariaDisabled="false";
+    document.getElementById("register").textContent="create account";
+    document.getElementById("register").disabled = false;
 
   }
 }); 
