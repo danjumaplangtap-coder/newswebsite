@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account | The margin</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="navbar">
+        <a class="logo" href="index.html">the margin</a>
+        <nav id="not-login" aria-label="Logged out navigation">
+            <a href="index.html#posts">Post</a>
+            <a href="hope work/my project 2/loggin.html">Sign in</a>
+            <a class="header-action" href="hope work/register.html">Get started</a>
+        </nav>
+        <nav id="login" hidden aria-label="Logged in navigation">
+            <a href="index.html#posts">Post</a>
+            <a href="hope work/my project 2/loggin.html">Sign in</a>
+            <a class="write-post" href="hope work/lamzy tech/post.html">Write</a>
+            
+        </nav>
+    </header>
+    <main class="hero">
+        <section class="writing">
+            <p class="header">ACCOUNT</p>
+            <h1 id="accountName">Your account</h1>
+            <p id="accountEmail" class="hero-text"></p>
+        </section>
+    </main>
+    <script src="js/api.js"></script>
+    <script>
+        const user = getCurrentUser();
+        if (!isAuthenticated()) {
+            window.location.replace("hope work/my project 2/loggin.html");
+        } else {
+            document.getElementById("accountName").textContent = user.fullName || user.name || "Your account";
+            document.getElementById("accountEmail").textContent = user.email || "Signed in successfully.";
+        }
+    </script>
+</body>
+</html>

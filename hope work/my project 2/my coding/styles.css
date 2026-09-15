@@ -15,6 +15,28 @@
     background-color: #faf8f4;
     border-color: #D9D2C5;
 }
+.navbar nav {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+}
+.navbar .logo {
+    color: #1a1610;
+    text-decoration: none;
+}
+.navbar nav a {
+    color: #7A7060;
+    text-decoration: none;
+    font-size: 14px;
+}
+.navbar .header-action,
+.navbar nav button {
+    background-color: #1a1610;
+    color: #fff;
+    border: 0;
+    border-radius: 4px;
+    padding: 10px 16px;
+}
 .logo {
     font-family: poppings;
     font-size: 25px;
@@ -90,4 +112,37 @@ footer {
 }
 .footer-logo {
     color: #1a1610;
+}
+
+@media (max-width: 700px) {
+    header,
+    .navbar {
+        flex-wrap: wrap;
+    }
+
+    header nav,
+    .navbar nav {
+        width: 100%;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        gap: 12px;
+    }
+}
+
+@media (max-width: 700px) {
+    header,
+    .navbar {
+        flex-wrap: wrap;
+        padding: 18px 16px;
+    }
+
+    header nav,
+    .navbar nav {
+        width: 100%;
+        padding: 12px 0 0;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-start;
+        border: 0;
+    }
 }

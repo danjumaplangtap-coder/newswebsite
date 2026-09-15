@@ -7,13 +7,19 @@
      <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="navbar">
-     <div class="logo">The margin</div> 
-     <nav>
-        <a href="../../../index.html#posts">posts</a>
-        <a href="../loggin.html">sign in</a>
-        <a href="../../lamzy tech/post.html"><button type="button">write</button></a>
-     </nav> 
+     <header class="navbar">
+      <a class="logo" href="../../../index.html">The margin</a>
+      <nav id="not-login" aria-label="Logged out navigation">
+          <a href="../../../index.html#posts">Post</a>
+          <a href="../loggin.html">Sign in</a>
+          <a class="header-action" href="../../register.html">Get started</a>
+      </nav>
+      <nav id="login" hidden aria-label="Logged in navigation">
+          <a href="../../../index.html#posts">Post</a>
+          <a href="../loggin.html">Sign in</a>
+          <a class="write-post" href="../../lamzy tech/post.html">Write</a>
+          <!-- <button type="button" data-logout data-home="../../../index.html">Log out</button> -->
+      </nav>
     </header>
 
 
@@ -47,7 +53,7 @@
             <a class="all-posts" href="../../../index.html#posts">← All posts</a>
             <section class="more">
                 <h2>More from Margot Ellison</h2>
-                <a class="related" href="#">
+                <a class="related" href="../../../index.html#posts">
                     <img src="image/Image (On Cities That Reward Slowness) (1).png">
                     <nav>
                         <b>On Cities That Reward Slowness</b>

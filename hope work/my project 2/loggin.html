@@ -7,13 +7,19 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="navbar">
-     <div class="logo">The margin</div> 
-     <nav>
-        <a href="../lamzy tech/post.html">post</a>
-        <a href="#">sign in</a>
-        <button>get started</button>
-     </nav> 
+     <header class="navbar">
+      <a class="logo" href="../../index.html">The margin</a>
+      <nav id="not-login" aria-label="Logged out navigation">
+        <a href="../../index.html#posts">Post</a>
+        <a href="loggin.html">Sign in</a>
+        <a class="header-action" href="../register.html">Get started</a>
+      </nav>
+      <nav id="login" hidden aria-label="Logged in navigation">
+        <a href="../../index.html#posts">Post</a>
+        <a href="loggin.html">Sign in</a>
+        <a class="header-action" href="../register.html">Get started</a>
+        <!-- <button type="button" data-logout data-home="../../index.html">Log out</button> -->
+      </nav>
     </header>
 
             <section class="inform">

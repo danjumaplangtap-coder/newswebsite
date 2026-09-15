@@ -7,14 +7,18 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header >
-        <div class="logo">The margin</div>
-       <nav>
-        <a href="../../index.html#posts">posts</a>
-        <button>write</button>
-        <div>
-            <img src="image/Layout (1).png">
-        </div>
+    <header class="navbar">
+        <a class="logo" href="../../index.html">The margin</a>
+    <nav id="not-login" aria-label="Logged out navigation">
+     <a href="../../index.html#posts">Post</a>
+     <a href="../my project 2/loggin.html">Sign in</a>
+    <a class="header-action" href="../register.html">Get started</a>
+    </nav>
+    <nav id="login" hidden aria-label="Logged in navigation">
+     <a href="../../index.html#posts">Post</a>
+     <a href="../my project 2/loggin.html">Sign in</a>
+     <button class="write-post" style="background-color:#b8651a; color: white; border-radius: 16px; text-decoration: none;" href="post.html">Write</button>
+     <!-- <button type="button" data-logout data-home="../../index.html">Log out</button> -->
        </nav>
     </header>
     

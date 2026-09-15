@@ -11,11 +11,17 @@
 </head>                                                                                                                                                                                                                                            
 <body>
     <header class="navbar">
-        <div class="logo">the margin</div>
-    <nav>
-        <a href="" onclick="alert('please Login')">posts</a>
-        <a href="hope work/my project 2/loggin.html">sign in</a>
-        <a href="hope work/register.html"><button type="button">get started</button></a>
+        <a class="logo" href="index.html">the margin</a>
+    <nav id="not-login" aria-label="Logged out navigation">
+        <a href="index.html#posts">Post</a>
+        <a href="hope work/my project 2/loggin.html">Sign in</a>
+        <a class="header-action" href="hope work/register.html">Get started</a>
+    </nav>
+    <nav id="login" hidden aria-label="Logged in navigation">
+        <a href="index.html#posts">Post</a>
+        <!-- <a href="hope work/my project 2/loggin.html">Sign in</a> -->
+        <a class="write-post" href="hope work/lamzy tech/post.html" style="padding: 20px; background-color:#b8651a; color: white; border-radius: 16px; text-decoration: none;">Write</a>
+        <!-- <button type="button" data-logout data-home="index.html">Log out</button> -->
     </nav>
     </header>
 
@@ -64,7 +70,7 @@
 
     <section class="more-essay">
         <p class="section-title">MORE ESSAYS</p>
-        <div id="posts" class="more-image">Loading essays...</div>
+        <div id="posts" class="posts-grid">Loading essays...</div>
     </section>
 
      <!-- <div class="card">
@@ -108,8 +114,13 @@
 </div>
     <script src="js/api.js"></script>
     <script>
-        const valueOf = (post, ...keys) => keys.map((key) => post[key]).find((value) => value !== undefined && value !== null) || "";
-        const escapeHtml = (value) => String(value).replace(/[&<>'"]/g, (character) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[character]));
+        const valueOf = (post, ...keys) => keys.map((key) => post[key]).find((value) => value !== undefined && value !== null && value !== "") || "";
+        const displayValue = (value, fallback = "") => {
+            if (value === null || value === undefined || value === "") return fallback;
+            if (typeof value === "object") return value.fullName || value.name || value.title || value.value || fallback;
+            return String(value);
+        };
+        const escapeHtml = (value) => displayValue(value).replace(/[&<>'"]/g, (character) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;","\"":"&quot;"}[character]));
 
         async function loadPosts() {
             const postsElement = document.getElementById("posts");
@@ -121,16 +132,16 @@
                 }
 
                 const firstPost = posts[0];
-                document.getElementById("featuredCategory").textContent = valueOf(firstPost, "category", "post_category") || "ESSAY";
-                document.getElementById("featuredTitle").textContent = valueOf(firstPost, "title", "post_title") || "Untitled essay";
-                document.getElementById("featuredExcerpt").textContent = valueOf(firstPost, "excerpt", "summary", "post_excerpt", "content");
+                document.getElementById("featuredCategory").textContent = displayValue(valueOf(firstPost, "category", "post_category"), "ESSAY");
+                document.getElementById("featuredTitle").textContent = displayValue(valueOf(firstPost, "title", "post_title"), "Untitled essay");
+                document.getElementById("featuredExcerpt").textContent = displayValue(valueOf(firstPost, "excerpt", "summary", "post_excerpt", "content"));
                 postsElement.innerHTML = posts.map((post, index) => {
                     const id = valueOf(post, "id", "_id", "postId");
-                    const title = valueOf(post, "title", "post_title") || "Untitled essay";
-                    const excerpt = valueOf(post, "excerpt", "summary", "post_excerpt", "content");
-                    const category = valueOf(post, "category", "post_category") || "ESSAY";
-                    const author = valueOf(post, "authorName", "studentName") || post.author?.fullName || post.author?.name || "margin contributor";
-                    return `<article class="card"><p class="category">${escapeHtml(category)}</p><h4 class="more"><a href="hope work/my project 2/my coding/Blog detail.html?id=${encodeURIComponent(id)}">${escapeHtml(title)}</a></h4><p class="after">${escapeHtml(String(excerpt).slice(0, 180))}</p><div class="small-author"><nav>${escapeHtml(author)}</nav></div></article>`;
+                    const title = displayValue(valueOf(post, "title", "post_title"), "Untitled essay");
+                    const excerpt = displayValue(valueOf(post, "excerpt", "summary", "post_excerpt", "content"));
+                    const category = displayValue(valueOf(post, "category", "post_category"), "ESSAY");
+                    const author = displayValue(valueOf(post, "authorName", "studentName"), "") || displayValue(post.author, "margin contributor");
+                    return `<article class="post-card"><img class="post-image" src="${escapeHtml(displayValue(post.imageUrl, "image/BlogListing_margin (2).png"))}" alt="${escapeHtml(title)}"><div class="post-card-body"><p class="post-category">${escapeHtml(category)}</p><h4 class="post-title"><a href="hope work/my project 2/my coding/Blog detail.html?id=${encodeURIComponent(id)}">${escapeHtml(title)}</a></h4><p class="post-excerpt">${escapeHtml(excerpt.slice(0, 180))}</p><div class="post-meta"><img class="author-avatar" src="image/Image (Margot Ellison).png" alt=""><span>${escapeHtml(author)}</span><span>${escapeHtml(displayValue(post.createdAt, ""))}</span><span>${escapeHtml(displayValue(post.readTime, "N/A"))} min read</span></div></div></article>`;
                 }).join("");
             } catch (error) {
                 postsElement.textContent = error.message;

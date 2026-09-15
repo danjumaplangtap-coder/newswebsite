@@ -4,6 +4,26 @@ function getToken() {
   return localStorage.getItem("token");
 }
 
+function getCurrentUser() {
+  const storedUser = localStorage.getItem("student");
+  if (!storedUser) return null;
+
+  try {
+    return JSON.parse(storedUser);
+  } catch (error) {
+    clearSession();
+    return null;
+  }
+}
+
+function isAuthenticated() {
+  return Boolean(getToken() && getCurrentUser());
+}
+
+function notifyAuthChange() {
+  window.dispatchEvent(new Event("authchange"));
+}
+
 function saveSession(data) {
   if (data && data.token) {
     localStorage.setItem("token", data.token);
@@ -11,11 +31,34 @@ function saveSession(data) {
   if (data && data.student) {
     localStorage.setItem("student", JSON.stringify(data.student));
   }
+  notifyAuthChange();
 }
 
 function clearSession() {
   localStorage.removeItem("token");
   localStorage.removeItem("student");
+  notifyAuthChange();
+}
+
+function initAuthNavigation() {
+  const loggedOutNavigation = document.getElementById("not-login");
+  const loggedInNavigation = document.getElementById("login");
+  if (!loggedOutNavigation || !loggedInNavigation) return;
+
+  const authenticated = Boolean(getToken());
+  loggedOutNavigation.hidden = authenticated;
+  loggedInNavigation.hidden = !authenticated;
+  loggedOutNavigation.style.display = authenticated ? "none" : "flex";
+  loggedInNavigation.style.display = authenticated ? "flex" : "none";
+
+  const logoutButton = loggedInNavigation.querySelector("[data-logout]");
+  if (logoutButton && !logoutButton.dataset.bound) {
+    logoutButton.dataset.bound = "true";
+    logoutButton.addEventListener("click", () => {
+      clearSession();
+      window.location.href = logoutButton.dataset.home || "index.html";
+    });
+  }
 }
 
 async function apiRequest(endpoint, options = {}, authRequired = false) {
@@ -50,7 +93,7 @@ async function apiRequest(endpoint, options = {}, authRequired = false) {
   }
 
   if (!response.ok || result.success === false) {
-    if (response.status === 401) {
+    if (response.status === 401 || response.status === 403) {
       clearSession();
     }
     throw new Error(result.message || `Request failed (${response.status}).`);
@@ -58,6 +101,12 @@ async function apiRequest(endpoint, options = {}, authRequired = false) {
 
   return result.data;
 }
+
+window.addEventListener("authchange", initAuthNavigation);
+window.addEventListener("storage", (event) => {
+  if (event.key === "token" || event.key === "student") initAuthNavigation();
+});
+document.addEventListener("DOMContentLoaded", initAuthNavigation);
 
 async function getPosts() {
   const data = await apiRequest("/api/posts");
